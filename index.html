@@ -93,7 +93,7 @@
 
             <div class="step" id="s4">
                 <label>Deje aqui registro fotografico del housekeeping</label>
-                <input type="file" id="fHK" accept="image/*" capture="environment">
+                <input type="file" id="fHK" accept="image/*">
                 <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(3)">Atrás</button><button type="button" class="btn btn-next" onclick="move(5)">Siguiente</button></div>
             </div>
 
@@ -123,9 +123,7 @@
                 <label>¿Cuantas horas demoro?</label>
                 <select id="horas">
                     <option value="1hrs">1hrs</option><option value="2hrs">2hrs</option>
-                    <option value="3hrs">3hrs</option><option value="4hrs">4hrs</option>
-                    <option value="5hrs">5hrs</option><option value="6hrs">6hrs</option>
-                    <option value="8hrs">8hrs</option><option value="10hrs">10hrs</option><option value="12hrs">12hrs</option>
+                    <option value="4hrs">4hrs</option><option value="8hrs">8hrs</option><option value="12hrs">12hrs</option>
                 </select>
                 <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(6)">Atrás</button><button type="button" class="btn btn-next" onclick="move(8)">Siguiente</button></div>
             </div>
@@ -149,18 +147,18 @@
             </div>
 
             <div class="step" id="s10">
-                <label>¿sacaste registro fotografico de la actividad realizada?</label>
-                <input type="file" id="fAct" accept="image/*" capture="environment">
+                <label>Registro fotografico actividad</label>
+                <input type="file" id="fAct" accept="image/*">
                 
-                <label>Deja aquí registro fotográfico de tu ART</label>
-                <input type="file" id="fART" accept="image/*" capture="environment">
+                <label>Registro fotográfico ART</label>
+                <input type="file" id="fART" accept="image/*">
 
-                <label>Deja aqui registro fotografico de tu plan de izaje en caso que aplique</label>
+                <label>Registro fotográfico Plan de Izaje</label>
                 <input type="file" id="fIzaje" accept="image/*">
 
                 <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(9)">Atrás</button></div>
                 <button type="submit" id="btnSubmit" class="btn btn-submit">ENVIAR REPORTE</button>
-                <div id="loader" class="loader">Sincronizando con Google Sheets...</div>
+                <div id="loader" class="loader">Comprimiendo fotos y enviando...</div>
             </div>
         </form>
     </div>
@@ -185,12 +183,27 @@
         document.getElementById('motDiv').style.display = (val === 'SI') ? 'none' : 'block';
     }
 
-    async function toB64(file) {
-        return new Promise((res) => {
-            if (!file) return res("");
-            const r = new FileReader();
-            r.onload = () => res(r.result);
-            r.readAsDataURL(file);
+    // FUNCIÓN CLAVE: Comprime la imagen para que pese poco
+    async function processImage(file) {
+        return new Promise((resolve) => {
+            if (!file) return resolve("");
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 400; // Reducimos el ancho para que quepa en la celda
+                    const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleSize;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    // Comprimimos al 60% de calidad
+                    resolve(canvas.toDataURL('image/jpeg', 0.6));
+                };
+            };
         });
     }
 
@@ -215,10 +228,11 @@
             queRepuestos: document.getElementById('queRepuestos').value || "N/A",
             terminado: document.getElementById('terminado').value,
             motivoNoTerminado: document.getElementById('motivoNoTerminado').value || "Finalizado",
-            fotoHK: await toB64(document.getElementById('fHK').files[0]),
-            fotoAct: await toB64(document.getElementById('fAct').files[0]),
-            fotoART: await toB64(document.getElementById('fART').files[0]),
-            fotoIzaje: await toB64(document.getElementById('fIzaje').files[0])
+            // Procesamos las fotos aquí
+            fotoHK: await processImage(document.getElementById('fHK').files[0]),
+            fotoAct: await processImage(document.getElementById('fAct').files[0]),
+            fotoART: await processImage(document.getElementById('fART').files[0]),
+            fotoIzaje: await processImage(document.getElementById('fIzaje').files[0])
         };
 
         try {
@@ -229,14 +243,14 @@
             });
 
             if (response.ok) {
-                alert("✅ ¡Reporte guardado con éxito en la nube!");
+                alert("✅ ¡Reporte guardado con éxito!");
                 location.reload();
             } else {
-                alert("❌ Error en el servidor. Verifica que 'node server.js' esté corriendo.");
+                alert("❌ Error en el servidor. Revisa la terminal.");
                 btn.disabled = false; ldr.style.display = 'none';
             }
         } catch (error) {
-            alert("❌ Error de conexión. Asegúrate de que la terminal negra no tenga errores.");
+            alert("❌ Error de conexión. ¿Está corriendo 'node server.js'?");
             btn.disabled = false; ldr.style.display = 'none';
         }
     });
