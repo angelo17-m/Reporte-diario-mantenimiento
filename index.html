@@ -3,41 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte Terreno - Codelco</title>
+    <title>Reporte Técnico - Codelco</title>
     <style>
         :root { --blue: #002855; --copper: #E05206; --bg: #f4f7f9; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; }
         .header { background: var(--blue); color: white; padding: 15px; text-align: center; border-radius: 8px 8px 0 0; }
-        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 0 0 8px 8px; border-top: 4px solid var(--copper); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .section { color: var(--blue); border-bottom: 1px solid #ddd; margin: 20px 0 10px; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
-        label { display: block; margin: 12px 0 4px; font-weight: 600; font-size: 0.85rem; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 1rem; }
-        .file-input { background: #fafafa; border: 1px dashed var(--blue); padding: 8px; }
-        .btn { background: var(--blue); color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 20px; }
-        .btn:disabled { background: #999; }
-        .msg { display: none; text-align: center; color: var(--copper); font-weight: bold; margin-top: 15px; }
+        .container { max-width: 550px; margin: 0 auto; background: white; padding: 20px; border-radius: 0 0 8px 8px; border-top: 5px solid var(--copper); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .section-title { color: var(--blue); border-bottom: 2px solid #eee; padding-bottom: 5px; margin-top: 25px; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
+        label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 1rem; }
+        .file-box { background: #f9f9f9; border: 1px dashed var(--blue); padding: 10px; border-radius: 5px; }
+        .btn { background: var(--blue); color: white; border: none; padding: 18px; width: 100%; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 30px; }
+        .btn:disabled { background: #ccc; }
+        .loader { display: none; text-align: center; color: var(--copper); font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="header">
     <h3 style="margin:0;">GESTIÓN DE MANTENIMIENTO</h3>
-    <p style="margin:5px 0 0; font-size: 0.75rem; opacity: 0.9;">REPORTE DIARIO DE TERRENO</p>
+    <p style="margin:5px 0 0; font-size: 0.75rem; opacity: 0.9;">REPORTE TÉCNICO OFICIAL</p>
 </div>
 
 <div class="container">
-    <form id="reportForm">
-        <div class="section">1. Identificación</div>
+    <form id="otForm">
+        <div class="section-title">1. Identificación</div>
         <label>Nombre del Responsable *</label>
-        <input type="text" id="nombre" placeholder="Nombre completo" required>
+        <input type="text" id="nombre" required placeholder="Nombre y Apellido">
 
         <label>N° Orden de Trabajo (OT)</label>
         <input type="text" id="ot" placeholder="Opcional">
 
-        <label>Cargo oficial</label>
-        <input type="text" id="cargo">
-
-        <label>¿De qué empresa eres?</label>
+        <label>Empresa</label>
         <select id="empresa">
             <option value="">Seleccione...</option>
             <option value="Codelco">Codelco</option>
@@ -49,62 +46,114 @@
         </select>
 
         <label>¿En qué equipo trabajaste?</label>
-        <input type="text" id="equipo">
-
-        <div class="section">2. Detalles del Trabajo</div>
-        <label>¿Ocupó repuestos?</label>
-        <select id="ocupoRepuestos">
-            <option value="No">No</option>
-            <option value="Si">Si</option>
+        <select id="equipo">
+            <option value="">Seleccione equipo...</option>
+            <optgroup label="Harnischfeger / F900">
+                <option value="Harn15/F900-1">Harn15/F900-1</option>
+                <option value="Harn25/F900-1">Harn25/F900-1</option>
+                <option value="F900-3">F900-3</option>
+                <option value="F900-3A">F900-3A</option>
+                <option value="Harn45/F900-4">Harn45/F900-4</option>
+                <option value="Harn5S/F900-5">Harn5S/F900-5</option>
+            </optgroup>
+            <optgroup label="F600 Serie A">
+                <option value="HarnF600 1A">HarnF600 1A</option>
+                <option value="HarnF600 2A">HarnF600 2A</option>
+                <option value="HarnF600 3A">HarnF600 3A</option>
+                <option value="HarnF600 4A">HarnF600 4A</option>
+                <option value="HarnF600 5A">HarnF600 5A</option>
+                <option value="HarnF600 6A">HarnF600 6A</option>
+                <option value="HarnF600 7A">HarnF600 7A</option>
+                <option value="HarnF600 8A">HarnF600 8A</option>
+                <option value="HarnF600 9A">HarnF600 9A</option>
+                <option value="HarnF600 10A">HarnF600 10A</option>
+            </optgroup>
+            <optgroup label="F600 Serie B">
+                <option value="HarnF600 3B">HarnF600 3B</option>
+                <option value="HarnF600 4B">HarnF600 4B</option>
+                <option value="HarnF600 5B">HarnF600 5B</option>
+                <option value="HarnF600 6B">HarnF600 6B</option>
+                <option value="HarnF600 7B">HarnF600 7B</option>
+                <option value="HarnF600 8B">HarnF600 8B</option>
+                <option value="HarnF600 9B">HarnF600 9B</option>
+                <option value="HarnF600 10B">HarnF600 10B</option>
+            </optgroup>
+            <optgroup label="Chancadores">
+                <option value="ChaS1">ChaS1</option><option value="ChaS2">ChaS2</option>
+                <option value="ChaS3">ChaS3</option><option value="ChaS4">ChaS4</option>
+                <option value="ChaS5">ChaS5</option><option value="ChaT1">ChaT1</option>
+                <option value="ChaT2">ChaT2</option><option value="ChaT3">ChaT3</option>
+                <option value="ChaT4">ChaT4</option><option value="ChaT5">ChaT5</option>
+                <option value="ChaT6">ChaT6</option><option value="ChaT7">ChaT7</option>
+                <option value="ChaT8">ChaT8</option><option value="ChaT9">ChaT9</option>
+                <option value="ChaT10">ChaT10</option>
+            </optgroup>
+            <optgroup label="Nodos y Correas">
+                <option value="NODO 1">NODO 1</option><option value="NODO 2">NODO 2</option><option value="NODO 3">NODO 3</option>
+                <option value="C/135A">C/135A</option><option value="C/1A">C/1A</option><option value="C/2A">C/2A</option>
+                <option value="C/11A">C/11A</option><option value="C/22A">C/22A</option><option value="C/140A">C/140A</option>
+                <option value="C/141A">C/141A</option><option value="C/140">C/140</option><option value="C/141">C/141</option>
+                <option value="C/142">C/142</option><option value="C/136A">C/136A</option><option value="C/136B">C/136B</option>
+                <option value="C/136C">C/136C</option><option value="C/144">C/144</option><option value="C/137A">C/137A</option>
+                <option value="C/137">C/137</option><option value="C/135B">C/135B</option><option value="C/135C">C/135C</option>
+                <option value="C/135D">C/135D</option><option value="C/136">C/136</option><option value="C/138">C/138</option>
+                <option value="C/139">C/139</option><option value="C/143">C/143</option><option value="C/135E">C/135E</option>
+                <option value="C/134A">C/134A</option><option value="C/134B">C/134B</option><option value="C/134C">C/134C</option>
+                <option value="C/134D">C/134D</option><option value="C/134E">C/134E</option>
+            </optgroup>
+            <option value="Fabricación/Reparación estructuras">Fabricación/Reparación estructuras</option>
+            <option value="Housekeeping">Housekeeping</option>
         </select>
-        
-        <label>¿Qué repuestos ocupó?</label>
-        <textarea id="queRepuestos" rows="2"></textarea>
 
-        <label>Dotación (N° personas)</label>
-        <input type="number" id="nPersonas">
-
-        <label>Horas de trabajo</label>
-        <input type="number" step="0.5" id="horas">
-
-        <label>¿Trabajo planificado?</label>
-        <select id="planificado">
-            <option value="">Seleccione...</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
+        <div class="section-title">2. Detalles de Ejecución</div>
+        <label>Dotación (¿Con cuántas personas trabajó?)</label>
+        <select id="nPersonas">
+            <option value="">Seleccione cantidad...</option>
+            <option value="1 persona">1 persona</option>
+            <option value="2 personas">2 personas</option>
+            <option value="3 personas">3 personas</option>
+            <option value="4 personas">4 personas</option>
+            <option value="5 personas">5 personas</option>
+            <option value="6 personas">6 personas</option>
+            <option value="7 personas">7 personas</option>
+            <option value="8 personas">8 personas</option>
+            <option value="9 personas">9 personas</option>
+            <option value="10 personas">10 personas</option>
         </select>
 
-        <label>¿Terminaste el trabajo completamente?</label>
+        <label>¿Cuántas horas demoró?</label>
+        <select id="horas">
+            <option value="">Seleccione horas...</option>
+            <option value="1 hr">1 hr</option><option value="2 hrs">2 hrs</option>
+            <option value="3 hrs">3 hrs</option><option value="4 hrs">4 hrs</option>
+            <option value="5 hrs">5 hrs</option><option value="6 hrs">6 hrs</option>
+            <option value="7 hrs">7 hrs</option><option value="8 hrs">8 hrs</option>
+            <option value="9 hrs">9 hrs</option><option value="10 hrs">10 hrs</option>
+            <option value="11 hrs">11 hrs</option><option value="12 hrs">12 hrs</option>
+        </select>
+
+        <label>¿Terminaste el trabajo?</label>
         <select id="terminado">
-            <option value="">Seleccione...</option>
+            <option value="">Seleccione estado...</option>
             <option value="Si">Si</option>
             <option value="No">No</option>
             <option value="En curso">En curso</option>
         </select>
-        
-        <label>Si no terminó, ¿Cuál es el motivo?</label>
-        <textarea id="motivoNoTerminado" rows="2"></textarea>
 
-        <div class="section">3. Evidencia (Fotos)</div>
+        <div class="section-title">3. Evidencia Fotográfica</div>
         <label>Foto Housekeeping</label>
-        <input type="file" id="fotoHousekeeping" accept="image/*" capture="environment" class="file-input">
-
-        <label>Foto Actividad Realizada</label>
-        <input type="file" id="fotoActividad" accept="image/*" capture="environment" class="file-input">
+        <input type="file" id="fotoHousekeeping" accept="image/*" capture="environment" class="file-box">
 
         <label>Foto ART</label>
-        <input type="file" id="fotoART" accept="image/*" capture="environment" class="file-input">
-
-        <label>Plan de Izaje</label>
-        <input type="file" id="fotoIzaje" accept="image/*" capture="environment" class="file-input">
+        <input type="file" id="fotoART" accept="image/*" capture="environment" class="file-box">
 
         <button type="submit" id="btn" class="btn">ENVIAR REPORTE</button>
-        <div id="loading" class="msg">Subiendo información y fotos... Por favor espere.</div>
+        <div id="loading" class="loader">Sincronizando datos y fotos... No cierre la página.</div>
     </form>
 </div>
 
 <script>
-    // URL que me pasaste actualizada
+    // PEGA AQUÍ TU ÚLTIMA URL DE APPS SCRIPT
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2KNZ9MWt5Y4c12LDWQQEGsNDI6xpcISFu7RG8iC8yRQdLIhtejel20MXq_ArsjK329Q/exec";
 
     async function toB64(file) {
@@ -116,44 +165,33 @@
         });
     }
 
-    document.getElementById('reportForm').addEventListener('submit', async (e) => {
+    document.getElementById('otForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btn');
         const loader = document.getElementById('loading');
         
         btn.disabled = true;
-        btn.innerText = "PROCESANDO...";
+        btn.innerText = "ENVIANDO...";
         loader.style.display = 'block';
 
         const payload = {
             nombre: document.getElementById('nombre').value,
             ot: document.getElementById('ot').value,
-            cargo: document.getElementById('cargo').value,
             empresa: document.getElementById('empresa').value,
             equipo: document.getElementById('equipo').value,
-            ocupoRepuestos: document.getElementById('ocupoRepuestos').value,
-            queRepuestos: document.getElementById('queRepuestos').value,
             nPersonas: document.getElementById('nPersonas').value,
             horas: document.getElementById('horas').value,
-            planificado: document.getElementById('planificado').value,
             terminado: document.getElementById('terminado').value,
-            motivoNoTerminado: document.getElementById('motivoNoTerminado').value,
             fotoHousekeeping: await toB64(document.getElementById('fotoHousekeeping').files[0]),
-            fotoActividad: await toB64(document.getElementById('fotoActividad').files[0]),
-            fotoART: await toB64(document.getElementById('fotoART').files[0]),
-            fotoIzaje: await toB64(document.getElementById('fotoIzaje').files[0])
+            fotoART: await toB64(document.getElementById('fotoART').files[0])
         };
 
-        fetch(SCRIPT_URL, { 
-            method: 'POST', 
-            mode: 'no-cors', 
-            body: JSON.stringify(payload) 
-        })
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
         .then(() => {
-            alert("Reporte enviado con éxito.");
+            alert("¡Reporte enviado con éxito!");
             location.reload();
         }).catch(() => {
-            alert("Error al enviar el reporte.");
+            alert("Error al enviar. Intente de nuevo.");
             btn.disabled = false;
             btn.innerText = "ENVIAR REPORTE";
             loader.style.display = 'none';
