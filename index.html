@@ -3,100 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte Diario - Chuquicamata</title>
+    <title>Reporte Diario de Mantenimiento</title>
     <style>
-        :root { --copper: #E05206; --bg: #000; --card: #1a1a1a; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; padding: 10px; margin: 0; }
-        .container { max-width: 500px; margin: 10px auto; background: var(--card); border-radius: 12px; border-top: 5px solid var(--copper); padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        label { display: block; margin: 15px 0 5px; font-weight: bold; color: #ccc; }
-        input, select, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #252525; color: white; box-sizing: border-box; }
+        :root { --copper: #E05206; --bg: #0b0b0b; --card: #1a1a1a; --text: #e0e0e0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
+        .container { max-width: 500px; margin: 0 auto; background: var(--card); border-radius: 15px; border-top: 6px solid var(--copper); box-shadow: 0 15px 35px rgba(0,0,0,0.7); overflow: hidden; }
+        .form-header { background: #222; padding: 20px; text-align: center; border-bottom: 1px solid #333; }
+        .form-header h2 { margin: 0; color: var(--copper); text-transform: uppercase; letter-spacing: 1px; font-size: 1.3rem; }
+        .form-content { padding: 25px; }
         .step { display: none; }
-        .step.active { display: block; }
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        .btn { flex: 1; padding: 15px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+        .step.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        label { display: block; margin: 20px 0 8px; font-weight: 600; color: #bbb; font-size: 0.9rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #333; border-radius: 8px; background: #252525; color: white; font-size: 1rem; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--copper); }
+        
+        .btn-group { display: flex; gap: 12px; margin-top: 30px; }
+        .btn { flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 1rem; }
         .btn-next { background: var(--copper); color: white; }
-        .btn-submit { background: #28a745; color: white; width: 100%; margin-top: 20px; }
-        .loader { display: none; text-align: center; color: var(--copper); margin-top: 10px; }
+        .btn-prev { background: #444; color: white; }
+        .btn-submit { background: #28a745; color: white; width: 100%; margin-top: 25px; }
+        .btn:disabled { background: #222; color: #555; cursor: not-allowed; }
+
+        .file-input-container { position: relative; margin-bottom: 15px; }
+        .file-label { display: block; background: #222; border: 2px dashed #444; padding: 15px; text-align: center; border-radius: 10px; cursor: pointer; color: #888; transition: 0.3s; }
+        .file-label:hover { border-color: var(--copper); color: #ccc; }
+        
+        .loader { display: none; text-align: center; padding: 20px; color: var(--copper); font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2 style="text-align:center; color:var(--copper);">Reporte Mantenimiento</h2>
-    <form id="mainForm">
-        <div class="step active" id="s1">
-            <label>Nombre Responsable *</label>
-            <input type="text" id="nombre" required>
-            <label>N° OT</label>
-            <input type="text" id="ot">
-            <div class="btn-group"><button type="button" class="btn btn-next" onclick="move(2)">Siguiente</button></div>
-        </div>
+    <div class="form-header">
+        <h2>Reporte de Terreno</h2>
+    </div>
+    
+    <div class="form-content">
+        <form id="mainForm">
+            <div class="step active" id="s1">
+                <label>Nombre del Responsable *</label>
+                <input type="text" id="nombre" required placeholder="Nombre completo">
+                
+                <label>Cargo Oficial</label>
+                <input type="text" id="cargo" placeholder="Ej: Mecánico A">
 
-        <div class="step" id="s2">
-            <label>Equipo</label>
-            <select id="equipo">
-                <option value="Carro norte (CT137)">Carro norte (CT137)</option>
-                <option value="Carro sur (CT137 A)">Carro sur (CT137 A)</option>
-                <option value="Harn15/F900-1">Harn15/F900-1</option>
-                <option value="NODO 1">NODO 1</option>
-                <option value="Housekeeping">Housekeeping</option>
-            </select>
-            <label>¿Terminado? *</label>
-            <select id="terminado" onchange="document.getElementById('mDiv').style.display=(this.value=='Si'?'none':'block')">
-                <option value="Si">Si</option><option value="No">No</option><option value="En curso">En curso</option>
-            </select>
-            <div id="mDiv" style="display:none;"><label>Motivo</label><textarea id="motivoText"></textarea></div>
-            <div class="btn-group">
-                <button type="button" class="btn" style="background:#444; color:white;" onclick="move(1)">Atrás</button>
-                <button type="button" class="btn btn-next" onclick="move(3)">Siguiente (Fotos)</button>
+                <label>N° Orden de Trabajo (OT)</label>
+                <input type="text" id="ot" placeholder="Número de OT">
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-next" onclick="move(2)">Siguiente</button>
+                </div>
             </div>
-        </div>
 
-        <div class="step" id="s3">
-            <label>Foto Actividad</label><input type="file" id="fAct" accept="image/*">
-            <label>Foto ART</label><input type="file" id="fART" accept="image/*">
-            <button type="submit" id="btnSubmit" class="btn btn-submit">ENVIAR A EXCEL</button>
-            <div id="loader" class="loader">Enviando... por favor espera.</div>
-        </div>
-    </form>
+            <div class="step" id="s2">
+                <label>¿De qué empresa eres?</label>
+                <select id="empresa">
+                    <option value="Codelco">Codelco</option>
+                    <option value="Metso">Metso</option>
+                    <option value="Nexxo">Nexxo</option>
+                    <option value="SKF">SKF</option>
+                    <option value="Schwager">Schwager</option>
+                    <option value="Cimap">Cimap</option>
+                </select>
+
+                <label>¿En qué equipo trabajaste?</label>
+                <select id="equipo">
+                    <option value="Carro norte (CT137)">Carro norte (CT137)</option>
+                    <option value="Carro sur (CT137 A)">Carro sur (CT137 A)</option>
+                    <option value="Harn15/F900-1">Harn15/F900-1</option>
+                    <option value="Harn25/F900-1">Harn25/F900-1</option>
+                    <option value="F900-3">F900-3</option>
+                    <option value="F900-3A">F900-3A</option>
+                    <option value="Harn45/F900-4">Harn45/F900-4</option>
+                    <option value="Harn5S/F900-5">Harn5S/F900-5</option>
+                    <option value="NODO 1">NODO 1</option>
+                    <option value="NODO 2">NODO 2</option>
+                    <option value="NODO 3">NODO 3</option>
+                    <option value="Housekeeping">Housekeeping</option>
+                    <option value="Estructuras">Estructuras</option>
+                </select>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-prev" onclick="move(1)">Atrás</button>
+                    <button type="button" class="btn btn-next" onclick="move(3)">Siguiente</button>
+                </div>
+            </div>
+
+            <div class="step" id="s3">
+                <label>¿Trabajo planificado?</label>
+                <select id="planificado">
+                    <option value="Si">Si</option>
+                    <option value="No">No</option>
+                </select>
+
+                <label>¿Cuántas personas trabajaron? (Dotación)</label>
+                <select id="nPersonas">
+                    <option value="1">1 Persona</option>
+                    <option value="2">2 Personas</option>
+                    <option value="3">3 Personas</option>
+                    <option value="4">4 Personas</option>
+                    <option value="5 o más">5 o más Personas</option>
+                </select>
+
+                <label>Horas hombre utilizadas</label>
+                <select id="horas">
+                    <option value="1-2 hrs">1-2 hrs</option>
+                    <option value="4 hrs">4 hrs</option>
+                    <option value="8 hrs">8 hrs</option>
+                    <option value="12 hrs">12 hrs</option>
+                </select>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-prev" onclick="move(2)">Atrás</button>
+                    <button type="button" class="btn btn-next" onclick="move(4)">Siguiente</button>
+                </div>
+            </div>
+
+            <div class="step" id="s4">
+                <label>¿Ocupó repuestos?</label>
+                <select id="ocupoRepuestos" onchange="toggleRepuestos()">
+                    <option value="No">No</option>
+                    <option value="Si">Si</option>
+                </select>
+                
+                <div id="repuestosDiv" style="display:none; margin-top:10px;">
+                    <label>Subir foto de Guía o Repuestos</label>
+                    <input type="file" id="fotoRepuestos" class="file-label" accept="image/*">
+                </div>
+
+                <label>¿Se terminó el trabajo? *</label>
+                <select id="terminado" onchange="toggleMotivo()">
+                    <option value="Si">Si</option>
+                    <option value="No">No</option>
+                    <option value="En curso">En curso</option>
+                </select>
+
+                <div id="motivoDiv" style="display:none; margin-top:10px;">
+                    <label>Indique motivo:</label>
+                    <textarea id="motivoNoTerminado" placeholder="Ej: Falta de repuesto, falta de tiempo..."></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-prev" onclick="move(3)">Atrás</button>
+                    <button type="button" class="btn btn-next" onclick="move(5)">Siguiente</button>
+                </div>
+            </div>
+
+            <div class="step" id="s5">
+                <label>Foto Actividad Realizada *</label>
+                <input type="file" id="fotoActividad" class="file-label" accept="image/*" capture="environment">
+
+                <label>Foto ART (Seguridad)</label>
+                <input type="file" id="fotoART" class="file-label" accept="image/*" capture="environment">
+
+                <label>Foto Housekeeping (Limpieza)</label>
+                <input type="file" id="fotoHK" class="file-label" accept="image/*" capture="environment">
+
+                <label>Foto Izaje (Si aplica)</label>
+                <input type="file" id="fotoIzaje" class="file-label" accept="image/*">
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-prev" onclick="move(4)">Atrás</button>
+                </div>
+                
+                <button type="submit" id="btnSubmit" class="btn btn-submit">ENVIAR REPORTE AL EXCEL</button>
+                <div id="loader" class="loader">Guardando datos y archivos...</div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_pTj-Fvk3SYJRCSGSxStejCg8XarO3Cj7mVfXhyetWsbCZk48YF4uFhlhpPuYIgjV/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2kjtC3L9fbisgn4lBoYBV8Hh3r2Gh7NDz9K0zy6DQB5DoZ6igs6uYTXykIOkKd8vh3Q/exec";
 
     function move(n) {
         document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
         document.getElementById('s' + n).classList.add('active');
+        window.scrollTo(0, 0);
     }
 
-    async function toB64(file) {
-        return new Promise((res) => {
-            if (!file) return res("");
-            const r = new FileReader();
-            r.onload = () => res(r.result);
-            r.readAsDataURL(file);
+    function toggleRepuestos() {
+        const val = document.getElementById('ocupoRepuestos').value;
+        document.getElementById('repuestosDiv').style.display = (val === 'Si') ? 'block' : 'none';
+    }
+
+    function toggleMotivo() {
+        const val = document.getElementById('terminado').value;
+        document.getElementById('motivoDiv').style.display = (val === 'Si') ? 'none' : 'block';
+    }
+
+    async function toBase64(file) {
+        return new Promise((resolve) => {
+            if (!file) return resolve("");
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(file);
         });
     }
 
     document.getElementById('mainForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
-        const ldr = document.getElementById('loader');
-        btn.disabled = true; ldr.style.display = 'block';
+        const loader = document.getElementById('loader');
+        
+        btn.disabled = true;
+        loader.style.display = 'block';
 
         const payload = {
             nombre: document.getElementById('nombre').value,
+            cargo: document.getElementById('cargo').value,
             ot: document.getElementById('ot').value,
+            empresa: document.getElementById('empresa').value,
             equipo: document.getElementById('equipo').value,
+            planificado: document.getElementById('planificado').value,
+            nPersonas: document.getElementById('nPersonas').value,
+            horas: document.getElementById('horas').value,
+            ocupoRepuestos: document.getElementById('ocupoRepuestos').value,
             terminado: document.getElementById('terminado').value,
-            motivoNoTerminado: document.getElementById('motivoText').value,
-            fotoActividad: await toB64(document.getElementById('fAct').files[0]),
-            fotoART: await toB64(document.getElementById('fART').files[0])
+            motivoNoTerminado: document.getElementById('motivoNoTerminado').value || "Finalizado",
+            fotoRepuestos: await toBase64(document.getElementById('fotoRepuestos').files[0]),
+            fotoActividad: await toBase64(document.getElementById('fotoActividad').files[0]),
+            fotoART: await toBase64(document.getElementById('fotoART').files[0]),
+            fotoHK: await toBase64(document.getElementById('fotoHK').files[0]),
+            fotoIzaje: await toBase64(document.getElementById('fotoIzaje').files[0])
         };
 
-        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
-        .then(() => { alert("Enviado con éxito"); location.reload(); })
-        .catch(() => { alert("Error"); btn.disabled = false; ldr.style.display = 'none'; });
+        try {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(payload)
+            });
+            alert("¡Éxito! El reporte se ha enviado correctamente al Excel.");
+            location.reload();
+        } catch (error) {
+            alert("Hubo un error al enviar el reporte. Verifica tu conexión.");
+            btn.disabled = false;
+            loader.style.display = 'none';
+        }
     });
 </script>
 </body>
