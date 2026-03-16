@@ -21,4 +21,150 @@
         .btn-submit { background: var(--codelco-blue); color: white; border: none; padding: 16px; width: 100%; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 30px; transition: 0.3s; }
         .btn-submit:hover { background: #004085; }
         .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
-        .loader { display: none; text-align: center; color: var(--codelco-copper); font
+        .loader { display: none; text-align: center; color: var(--codelco-copper); font-weight: bold; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2 style="margin:0;">GESTIÓN DE MANTENIMIENTO</h2>
+    <p style="margin:5px 0 0; font-size: 0.8rem; opacity: 0.9;">REPORTE TÉCNICO DE TERRENO</p>
+</div>
+
+<div class="container">
+    <form id="mainForm">
+        <div class="section-title">1. Identificación del Personal</div>
+        <label>Nombre del Responsable *</label>
+        <input type="text" id="nombre" placeholder="Nombre completo" required>
+
+        <label>N° Orden de Trabajo (OT)</label>
+        <input type="text" id="ot" placeholder="Ej: 109860XXX">
+
+        <label>Cargo Oficial</label>
+        <input type="text" id="cargo" placeholder="Ej: Supervisor / Técnico">
+
+        <label>¿De qué empresa eres?</label>
+        <select id="empresa">
+            <option value="">Seleccione empresa...</option>
+            <option value="Codelco">Codelco</option>
+            <option value="Metso">Metso</option>
+            <option value="SFK">SFK</option>
+            <option value="Nexxo">Nexxo</option>
+            <option value="Schwager">Schwager</option>
+            <option value="Cimap">Cimap</option>
+            <option value="Otra">Otra</option>
+        </select>
+
+        <label>¿En qué equipo trabajaste?</label>
+        <input type="text" id="equipo" placeholder="Ej: Chancador / Cinta">
+
+        <div class="section-title">2. Detalles de Ejecución</div>
+        <label>¿Ocupó repuestos?</label>
+        <select id="ocupoRepuestos">
+            <option value="No">No</option>
+            <option value="Si">Si</option>
+        </select>
+
+        <label>¿Qué repuestos ocupó?</label>
+        <textarea id="queRepuestos" rows="2" placeholder="Describa los repuestos usados..."></textarea>
+
+        <label>Dotación (N° personas)</label>
+        <input type="number" id="nPersonas" placeholder="0">
+
+        <label>Tiempo de ejecución (Horas)</label>
+        <input type="number" step="0.5" id="horas" placeholder="Ej: 4.5">
+
+        <label>¿Trabajo planificado?</label>
+        <select id="planificado">
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+        </select>
+
+        <label>¿Terminaste el trabajo?</label>
+        <select id="terminado">
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+        </select>
+
+        <label>Si no terminó, ¿Cuál es el motivo?</label>
+        <textarea id="motivoNoTerminado" rows="2"></textarea>
+
+        <div class="section-title">3. Evidencia Fotográfica (Opcional)</div>
+        <p style="font-size: 0.75rem; color: #666; margin-top: 5px;">* Puede tomar la foto directamente o subir una de la galería.</p>
+        
+        <label>Foto Housekeeping</label>
+        <input type="file" id="fotoHousekeeping" accept="image/*" capture="environment" class="photo-input">
+
+        <label>Registro Actividad Realizada</label>
+        <input type="file" id="fotoActividad" accept="image/*" capture="environment" class="photo-input">
+
+        <label>Foto ART</label>
+        <input type="file" id="fotoART" accept="image/*" capture="environment" class="photo-input">
+
+        <label>Plan de Izaje</label>
+        <input type="file" id="fotoIzaje" accept="image/*" capture="environment" class="photo-input">
+
+        <button type="submit" id="btnEnviar" class="btn-submit">Sincronizar Reporte</button>
+        <div id="loader" class="loader">Subiendo reporte y fotos... Por favor espere.</div>
+    </form>
+</div>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbztBmbN0kpDbVqVQuG81VXwEptnOv668rxybLCffE1K9QZXxPSZhjgobYnuNPkqf6F8Tw/exec";
+
+    async function toBase64(file) {
+        return new Promise((resolve) => {
+            if (!file) return resolve("");
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    document.getElementById('mainForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btnEnviar');
+        const loader = document.getElementById('loader');
+        
+        btn.disabled = true;
+        btn.innerText = "ENVIANDO...";
+        loader.style.display = 'block';
+
+        const payload = {
+            nombre: document.getElementById('nombre').value,
+            ot: document.getElementById('ot').value,
+            cargo: document.getElementById('cargo').value,
+            empresa: document.getElementById('empresa').value,
+            equipo: document.getElementById('equipo').value,
+            ocupoRepuestos: document.getElementById('ocupoRepuestos').value,
+            queRepuestos: document.getElementById('queRepuestos').value,
+            nPersonas: document.getElementById('nPersonas').value,
+            horas: document.getElementById('horas').value,
+            planificado: document.getElementById('planificado').value,
+            terminado: document.getElementById('terminado').value,
+            motivoNoTerminado: document.getElementById('motivoNoTerminado').value,
+            fotoHousekeeping: await toBase64(document.getElementById('fotoHousekeeping').files[0]),
+            fotoActividad: await toBase64(document.getElementById('fotoActividad').files[0]),
+            fotoART: await toBase64(document.getElementById('fotoART').files[0]),
+            fotoIzaje: await toBase64(document.getElementById('fotoIzaje').files[0])
+        };
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(payload)
+        }).then(() => {
+            alert("¡Reporte enviado con éxito!");
+            location.reload();
+        }).catch(err => {
+            alert("Error de conexión. Intente nuevamente.");
+            btn.disabled = false;
+            btn.innerText = "Sincronizar Reporte";
+            loader.style.display = 'none';
+        });
+    });
+</script>
+</body>
+</html>
