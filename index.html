@@ -3,76 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Reporte Técnico - Codelco</title>
+    <title>Reporte Terreno - Codelco</title>
     <style>
-        :root {
-            --codelco-blue: #002855;
-            --codelco-copper: #E05206;
-            --gray-light: #f4f7f9;
-        }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--gray-light); margin: 0; padding: 15px; color: #333; }
-        .header { background: var(--codelco-blue); color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0; margin-bottom: -10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .container { max-width: 550px; margin: 0 auto; background: white; padding: 25px; border-radius: 0 0 10px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 5px solid var(--codelco-copper); }
-        .section-title { color: var(--codelco-blue); border-bottom: 2px solid #eee; padding-bottom: 5px; margin-top: 25px; font-size: 0.95rem; text-transform: uppercase; font-weight: bold; }
-        label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 1rem; }
-        input:focus { border-color: var(--codelco-copper); outline: none; }
-        .photo-input { background: #fdfdfd; border: 1px dashed var(--codelco-blue); }
-        .btn-submit { background: var(--codelco-blue); color: white; border: none; padding: 16px; width: 100%; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 30px; transition: 0.3s; }
-        .btn-submit:hover { background: #004085; }
-        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
-        .loader { display: none; text-align: center; color: var(--codelco-copper); font-weight: bold; margin-top: 15px; }
+        :root { --blue: #002855; --copper: #E05206; --bg: #f4f7f9; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; }
+        .header { background: var(--blue); color: white; padding: 15px; text-align: center; border-radius: 8px 8px 0 0; }
+        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 0 0 8px 8px; border-top: 4px solid var(--copper); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .section { color: var(--blue); border-bottom: 1px solid #ddd; margin: 20px 0 10px; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
+        label { display: block; margin: 12px 0 4px; font-weight: 600; font-size: 0.85rem; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 1rem; }
+        .file-input { background: #fafafa; border: 1px dashed var(--blue); padding: 8px; }
+        .btn { background: var(--blue); color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 20px; }
+        .btn:disabled { background: #999; }
+        .msg { display: none; text-align: center; color: var(--copper); font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h2 style="margin:0;">GESTIÓN DE MANTENIMIENTO</h2>
-    <p style="margin:5px 0 0; font-size: 0.8rem; opacity: 0.9;">REPORTE TÉCNICO DE TERRENO</p>
+    <h3 style="margin:0;">GESTIÓN DE MANTENIMIENTO</h3>
+    <p style="margin:5px 0 0; font-size: 0.75rem; opacity: 0.9;">REPORTE DIARIO DE TERRENO</p>
 </div>
 
 <div class="container">
-    <form id="mainForm">
-        <div class="section-title">1. Identificación del Personal</div>
+    <form id="reportForm">
+        <div class="section">1. Identificación</div>
         <label>Nombre del Responsable *</label>
         <input type="text" id="nombre" placeholder="Nombre completo" required>
 
         <label>N° Orden de Trabajo (OT)</label>
-        <input type="text" id="ot" placeholder="Ej: 109860XXX">
+        <input type="text" id="ot" placeholder="Opcional">
 
-        <label>Cargo Oficial</label>
-        <input type="text" id="cargo" placeholder="Ej: Supervisor / Técnico">
+        <label>Cargo oficial</label>
+        <input type="text" id="cargo">
 
         <label>¿De qué empresa eres?</label>
         <select id="empresa">
-            <option value="">Seleccione empresa...</option>
+            <option value="">Seleccione...</option>
             <option value="Codelco">Codelco</option>
             <option value="Metso">Metso</option>
             <option value="SFK">SFK</option>
             <option value="Nexxo">Nexxo</option>
             <option value="Schwager">Schwager</option>
             <option value="Cimap">Cimap</option>
-            <option value="Otra">Otra</option>
         </select>
 
         <label>¿En qué equipo trabajaste?</label>
-        <input type="text" id="equipo" placeholder="Ej: Chancador / Cinta">
+        <input type="text" id="equipo">
 
-        <div class="section-title">2. Detalles de Ejecución</div>
+        <div class="section">2. Detalles del Trabajo</div>
         <label>¿Ocupó repuestos?</label>
         <select id="ocupoRepuestos">
             <option value="No">No</option>
             <option value="Si">Si</option>
         </select>
-
+        
         <label>¿Qué repuestos ocupó?</label>
-        <textarea id="queRepuestos" rows="2" placeholder="Describa los repuestos usados..."></textarea>
+        <textarea id="queRepuestos" rows="2"></textarea>
 
         <label>Dotación (N° personas)</label>
-        <input type="number" id="nPersonas" placeholder="0">
+        <input type="number" id="nPersonas">
 
-        <label>Tiempo de ejecución (Horas)</label>
-        <input type="number" step="0.5" id="horas" placeholder="Ej: 4.5">
+        <label>Horas de trabajo</label>
+        <input type="number" step="0.5" id="horas">
 
         <label>¿Trabajo planificado?</label>
         <select id="planificado">
@@ -81,55 +74,55 @@
             <option value="No">No</option>
         </select>
 
-        <label>¿Terminaste el trabajo?</label>
+        <label>¿Terminaste el trabajo completamente?</label>
         <select id="terminado">
             <option value="">Seleccione...</option>
             <option value="Si">Si</option>
             <option value="No">No</option>
+            <option value="En curso">En curso</option>
         </select>
-
+        
         <label>Si no terminó, ¿Cuál es el motivo?</label>
         <textarea id="motivoNoTerminado" rows="2"></textarea>
 
-        <div class="section-title">3. Evidencia Fotográfica (Opcional)</div>
-        <p style="font-size: 0.75rem; color: #666; margin-top: 5px;">* Puede tomar la foto directamente o subir una de la galería.</p>
-        
+        <div class="section">3. Evidencia (Fotos)</div>
         <label>Foto Housekeeping</label>
-        <input type="file" id="fotoHousekeeping" accept="image/*" capture="environment" class="photo-input">
+        <input type="file" id="fotoHousekeeping" accept="image/*" capture="environment" class="file-input">
 
-        <label>Registro Actividad Realizada</label>
-        <input type="file" id="fotoActividad" accept="image/*" capture="environment" class="photo-input">
+        <label>Foto Actividad Realizada</label>
+        <input type="file" id="fotoActividad" accept="image/*" capture="environment" class="file-input">
 
         <label>Foto ART</label>
-        <input type="file" id="fotoART" accept="image/*" capture="environment" class="photo-input">
+        <input type="file" id="fotoART" accept="image/*" capture="environment" class="file-input">
 
         <label>Plan de Izaje</label>
-        <input type="file" id="fotoIzaje" accept="image/*" capture="environment" class="photo-input">
+        <input type="file" id="fotoIzaje" accept="image/*" capture="environment" class="file-input">
 
-        <button type="submit" id="btnEnviar" class="btn-submit">Sincronizar Reporte</button>
-        <div id="loader" class="loader">Subiendo reporte y fotos... Por favor espere.</div>
+        <button type="submit" id="btn" class="btn">ENVIAR REPORTE</button>
+        <div id="loading" class="msg">Subiendo información y fotos... Por favor espere.</div>
     </form>
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbztBmbN0kpDbVqVQuG81VXwEptnOv668rxybLCffE1K9QZXxPSZhjgobYnuNPkqf6F8Tw/exec";
+    // URL que me pasaste actualizada
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2KNZ9MWt5Y4c12LDWQQEGsNDI6xpcISFu7RG8iC8yRQdLIhtejel20MXq_ArsjK329Q/exec";
 
-    async function toBase64(file) {
-        return new Promise((resolve) => {
-            if (!file) return resolve("");
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.readAsDataURL(file);
+    async function toB64(file) {
+        return new Promise((res) => {
+            if (!file) return res("");
+            const r = new FileReader();
+            r.onload = () => res(r.result);
+            r.readAsDataURL(file);
         });
     }
 
-    document.getElementById('mainForm').addEventListener('submit', async (e) => {
+    document.getElementById('reportForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const btn = document.getElementById('btnEnviar');
-        const loader = document.getElementById('loader');
+        const btn = document.getElementById('btn');
+        const loader = document.getElementById('loading');
         
         btn.disabled = true;
-        btn.innerText = "ENVIANDO...";
+        btn.innerText = "PROCESANDO...";
         loader.style.display = 'block';
 
         const payload = {
@@ -145,23 +138,24 @@
             planificado: document.getElementById('planificado').value,
             terminado: document.getElementById('terminado').value,
             motivoNoTerminado: document.getElementById('motivoNoTerminado').value,
-            fotoHousekeeping: await toBase64(document.getElementById('fotoHousekeeping').files[0]),
-            fotoActividad: await toBase64(document.getElementById('fotoActividad').files[0]),
-            fotoART: await toBase64(document.getElementById('fotoART').files[0]),
-            fotoIzaje: await toBase64(document.getElementById('fotoIzaje').files[0])
+            fotoHousekeeping: await toB64(document.getElementById('fotoHousekeeping').files[0]),
+            fotoActividad: await toB64(document.getElementById('fotoActividad').files[0]),
+            fotoART: await toB64(document.getElementById('fotoART').files[0]),
+            fotoIzaje: await toB64(document.getElementById('fotoIzaje').files[0])
         };
 
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify(payload)
-        }).then(() => {
-            alert("¡Reporte enviado con éxito!");
+        fetch(SCRIPT_URL, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: JSON.stringify(payload) 
+        })
+        .then(() => {
+            alert("Reporte enviado con éxito.");
             location.reload();
-        }).catch(err => {
-            alert("Error de conexión. Intente nuevamente.");
+        }).catch(() => {
+            alert("Error al enviar el reporte.");
             btn.disabled = false;
-            btn.innerText = "Sincronizar Reporte";
+            btn.innerText = "ENVIAR REPORTE";
             loader.style.display = 'none';
         });
     });
