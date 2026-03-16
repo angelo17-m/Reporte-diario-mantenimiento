@@ -55,7 +55,7 @@
             <div class="step" id="s3">
                 <label>¿En que equipo trabajaste?</label>
                 <select id="equipo">
-                   <option value="Harn15/F900-1">Harn15/F900-1</option><option value="Harn25/F900-1">Harn25/F900-1</option>
+                    <option value="Harn15/F900-1">Harn15/F900-1</option><option value="Harn25/F900-1">Harn25/F900-1</option>
                     <option value="F900-3">F900-3</option><option value="F900-3A">F900-3A</option>
                     <option value="Harn45/F900-4">Harn45/F900-4</option><option value="Harn5S/F900-5">Harn5S/F900-5</option>
                     <option value="HarnF600 1A">HarnF600 1A</option><option value="HarnF600 2A">HarnF600 2A</option>
@@ -160,14 +160,13 @@
 
                 <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(9)">Atrás</button></div>
                 <button type="submit" id="btnSubmit" class="btn btn-submit">ENVIAR REPORTE</button>
-                <div id="loader" class="loader">Sincronizando con Excel...</div>
+                <div id="loader" class="loader">Sincronizando con Google Sheets...</div>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    // URL DEL SERVIDOR LOCAL
     const SCRIPT_URL = "http://localhost:3000/guardar-reporte";
 
     function move(n) {
@@ -199,7 +198,9 @@
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
         const ldr = document.getElementById('loader');
-        btn.disabled = true; ldr.style.display = 'block';
+        
+        btn.disabled = true; 
+        ldr.style.display = 'block';
 
         const payload = {
             nombre: document.getElementById('nombre').value,
@@ -221,20 +222,21 @@
         };
 
         try {
-            const response = await fetch(SCRIPT_URL, { 
-                method: 'POST', 
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload) 
+                body: JSON.stringify(payload)
             });
 
             if (response.ok) {
-                alert("✅ ¡Reporte guardado con éxito en el Excel local!");
+                alert("✅ ¡Reporte guardado con éxito en la nube!");
                 location.reload();
             } else {
-                alert("❌ Error en el servidor local.");
+                alert("❌ Error en el servidor. Verifica que 'node server.js' esté corriendo.");
+                btn.disabled = false; ldr.style.display = 'none';
             }
         } catch (error) {
-            alert("❌ Error de conexión. ¿Está corriendo 'node server.js' en la terminal?");
+            alert("❌ Error de conexión. Asegúrate de que la terminal negra no tenga errores.");
             btn.disabled = false; ldr.style.display = 'none';
         }
     });
