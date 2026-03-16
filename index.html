@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Técnico - Codelco</title>
+    <style>
+        :root { --codelco-blue: #002855; --codelco-copper: #E05206; --gray: #f4f7f9; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--gray); margin: 0; padding: 15px; }
+        .header { background: var(--codelco-blue); color: white; padding: 15px; text-align: center; border-radius: 10px 10px 0 0; }
+        .container { max-width: 550px; margin: 0 auto; background: white; padding: 25px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid var(--codelco-copper); }
+        .section-title { color: var(--codelco-blue); border-bottom: 2px solid #eee; padding-bottom: 5px; margin-top: 20px; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
+        label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .photo-box { background: #fdfdfd; border: 1px dashed #002855; padding: 10px; border-radius: 5px; margin-top: 5px; }
+        .btn-submit { background: var(--codelco-blue); color: white; border: none; padding: 16px; width: 100%; border-radius: 5px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 25px; }
+        .btn-submit:active { background: var(--codelco-copper); }
+        .loading { display: none; text-align: center; color: var(--codelco-copper); margin-top: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h3 style="margin:0;">REPORTE DE TERRENO</h3>
+</div>
+
+<div class="container">
+    <form id="reporteForm">
+        <div class="section-title">1. Datos del Personal</div>
+        <label>Nombre del Responsable *</label>
+        <input type="text" id="nombre" placeholder="Nombre completo" required>
+
+        <label>N° Orden de Trabajo (OT)</label>
+        <input type="text" id="ot" placeholder="Opcional">
+
+        <label>¿De qué empresa eres?</label>
+        <select id="empresa">
+            <option value="">Seleccione...</option>
+            <option value="Codelco">Codelco</option>
+            <option value="Metso">Metso</option>
+            <option value="SFK">SFK</option>
+            <option value="Nexxo">Nexxo</option>
+            <option value="Schwager">Schwager</option>
+            <option value="Cimap">Cimap</option>
+        </select>
+
+        <div class="section-title">2. Información del Trabajo</div>
+        <label>Equipo intervenido</label>
+        <input type="text" id="equipo">
+
+        <label>¿Terminaste el trabajo?</label>
+        <select id="terminado">
+            <option value="">Seleccione...</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+        </select>
+
+        <div class="section-title">3. Evidencia Fotográfica</div>
+        <label>Foto Housekeeping</label>
+        <input type="file" id="fotoHousekeeping" accept="image/*" capture="environment" class="photo-box">
+
+        <label>Foto ART</label>
+        <input type="file" id="fotoART" accept="image/*" capture="environment" class="photo-box">
+
+        <button type="submit" id="btnEnviar" class="btn-submit">ENVIAR REPORTE</button>
+        <div id="loading" class="loading">Subiendo datos y fotos... No cierre la página.</div>
+    </form>
+</div>
+
+<script>
+    const SCRIPT_URL ="https://script.google.com/macros/s/AKfycbxDCtzmeNh6tujJyvVgHdIParslqB0-Tjx689XAEx-I75YtbKxCGokkv5GFXO44geAmhg/exec";
+
+    async function toBase64(file) {
+        return new Promise((resolve) => {
+            if (!file) return resolve("");
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    document.getElementById('reporteForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btnEnviar');
+        const loader = document.getElementById('loading');
+        
+        btn.disabled = true;
+        btn.innerText = "PROCESANDO...";
+        loader.style.display = 'block';
+
+        const payload = {
+            nombre: document.getElementById('nombre').value,
+            ot: document.getElementById('ot').value,
+            empresa: document.getElementById('empresa').value,
+            equipo: document.getElementById('equipo').value,
+            terminado: document.getElementById('terminado').value,
+            fotoHousekeeping: await toBase64(document.getElementById('fotoHousekeeping').files[0]),
+            fotoART: await toBase64(document.getElementById('fotoART').files[0])
+        };
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(payload)
+        }).then(() => {
+            alert("¡Reporte enviado con éxito!");
+            location.reload();
+        }).catch(() => {
+            alert("Hubo un error al enviar.");
+            btn.disabled = false;
+            btn.innerText = "REINTENTAR";
+            loader.style.display = 'none';
+        });
+    });
+</script>
+</body>
+</html>
