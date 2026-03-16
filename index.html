@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Diario - Chuquicamata</title>
+    <style>
+        :root { --copper: #E05206; --bg: #0b0b0b; --card: #1a1a1a; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; padding: 10px; margin: 0; }
+        .container { max-width: 500px; margin: 10px auto; background: var(--card); border-radius: 12px; border-top: 5px solid var(--copper); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .form-content { padding: 20px; }
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        label { display: block; margin: 15px 0 5px; font-weight: bold; color: #ccc; font-size: 0.9rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #333; border-radius: 8px; background: #252525; color: white; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 10px; margin-top: 25px; }
+        .btn { flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-next { background: var(--copper); color: white; }
+        .btn-prev { background: #444; color: white; }
+        .btn-submit { background: #28a745; color: white; width: 100%; margin-top: 20px; }
+        .loader { display: none; text-align: center; color: var(--copper); font-weight: bold; margin-top: 15px; }
+        option { background: #1a1a1a; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-content">
+        <h2 style="text-align:center; color:var(--copper); text-transform:uppercase;">Reporte Diario</h2>
+        <form id="mainForm">
+            <div class="step active" id="s1">
+                <label>Nombre *</label>
+                <input type="text" id="nombre" required placeholder="Nombre y Apellido">
+                <label>N° OT</label>
+                <input type="text" id="ot" placeholder="Número de OT">
+                <label>Cargo oficial</label>
+                <input type="text" id="cargo" placeholder="Tu cargo">
+                <div class="btn-group"><button type="button" class="btn btn-next" onclick="move(2)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s2">
+                <label>¿De que empresa eres?</label>
+                <select id="empresa">
+                    <option value="Codelco">Codelco</option>
+                    <option value="Metso">Metso</option>
+                    <option value="Nexxo">Nexxo</option>
+                    <option value="SKF">SKF</option>
+                    <option value="Schwager">Schwager</option>
+                    <option value="Cimap">Cimap</option>
+                </select>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(1)">Atrás</button><button type="button" class="btn btn-next" onclick="move(3)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s3">
+                <label>¿En que equipo trabajaste?</label>
+                <select id="equipo">
+                    <option value="Carro norte (CT137)">Carro norte (CT137)</option>
+                    <option value="Carro sur (CT137 A)">Carro sur (CT137 A)</option>
+                    <option value="Harn15/F900-1">Harn15/F900-1</option>
+                    <option value="Harn25/F900-1">Harn25/F900-1</option>
+                    <option value="F900-3">F900-3</option>
+                    <option value="F900-3A">F900-3A</option>
+                    <option value="Harn45/F900-4">Harn45/F900-4</option>
+                    <option value="Harn5S/F900-5">Harn5S/F900-5</option>
+                    <option value="HarnF600 1A">HarnF600 1A</option>
+                    <option value="HarnF600 2A">HarnF600 2A</option>
+                    <option value="ChaS1">ChaS1</option><option value="ChaS2">ChaS2</option><option value="ChaS3">ChaS3</option>
+                    <option value="ChaT1">ChaT1</option><option value="ChaT2">ChaT2</option>
+                    <option value="NODO 1">NODO 1</option><option value="NODO 2">NODO 2</option><option value="NODO 3">NODO 3</option>
+                    <option value="C/135A">C/135A</option><option value="C/140">C/140</option>
+                    <option value="Fabricación/Reparación estructuras">Fabricación/Reparación estructuras</option>
+                    <option value="Housekeeping">Housekeeping</option>
+                </select>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(2)">Atrás</button><button type="button" class="btn btn-next" onclick="move(4)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s4">
+                <label>Deje aqui registro fotografico del housekeeping</label>
+                <input type="file" id="fHK" accept="image/*" capture="environment">
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(3)">Atrás</button><button type="button" class="btn btn-next" onclick="move(5)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s5">
+                <label>¿Ocupó repuestos? *</label>
+                <select id="ocupoRepuestos" onchange="toggleRepuestos()">
+                    <option value="NO">NO</option><option value="SI">SI</option>
+                </select>
+                <div id="repDiv" style="display:none; margin-top:10px;">
+                    <label>¿Que repuestos ocupo?</label>
+                    <textarea id="queRepuestos" placeholder="Escriba los repuestos utilizados..."></textarea>
+                </div>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(4)">Atrás</button><button type="button" class="btn btn-next" onclick="move(6)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s6">
+                <label>¿Con cuantas personas se hizo el trabajo?</label>
+                <select id="nPersonas">
+                    <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                    <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                    <option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+                </select>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(5)">Atrás</button><button type="button" class="btn btn-next" onclick="move(7)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s7">
+                <label>¿Cuantas horas demoro?</label>
+                <select id="horas">
+                    <option value="1hrs">1hrs</option><option value="2hrs">2hrs</option>
+                    <option value="3hrs">3hrs</option><option value="4hrs">4hrs</option>
+                    <option value="5hrs">5hrs</option><option value="6hrs">6hrs</option>
+                    <option value="8hrs">8hrs</option><option value="10hrs">10hrs</option><option value="12hrs">12hrs</option>
+                </select>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(6)">Atrás</button><button type="button" class="btn btn-next" onclick="move(8)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s8">
+                <label>¿trabajo planificado?</label>
+                <select id="planificado"><option value="SI">SI</option><option value="NO">NO</option></select>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(7)">Atrás</button><button type="button" class="btn btn-next" onclick="move(9)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s9">
+                <label>¿Terminaste el trabajo completamente? *</label>
+                <select id="terminado" onchange="toggleMotivo()">
+                    <option value="SI">SI</option><option value="NO">NO</option><option value="EN CURSO">EN CURSO</option>
+                </select>
+                <div id="motDiv" style="display:none; margin-top:10px;">
+                    <label>Si no terminaste el trabajo , ¿Porque motivo?</label>
+                    <textarea id="motivoNoTerminado" placeholder="Explique la razón..."></textarea>
+                </div>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(8)">Atrás</button><button type="button" class="btn btn-next" onclick="move(10)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s10">
+                <label>¿sacaste registro fotografico de la actividad realizada?</label>
+                <input type="file" id="fAct" accept="image/*" capture="environment">
+                
+                <label>Deja aquí registro fotográfico de tu ART</label>
+                <input type="file" id="fART" accept="image/*" capture="environment">
+
+                <label>Deja aqui registro fotografico de tu plan de izaje en caso que aplique</label>
+                <input type="file" id="fIzaje" accept="image/*">
+
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(9)">Atrás</button></div>
+                <button type="submit" id="btnSubmit" class="btn btn-submit">ENVIAR REPORTE</button>
+                <div id="loader" class="loader">Sincronizando con Excel...</div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2kjtC3L9fbisgn4lBoYBV8Hh3r2Gh7NDz9K0zy6DQB5DoZ6igs6uYTXykIOkKd8vh3Q/exec";
+
+    function move(n) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('s' + n).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function toggleRepuestos() {
+        const val = document.getElementById('ocupoRepuestos').value;
+        document.getElementById('repDiv').style.display = (val === 'SI') ? 'block' : 'none';
+    }
+
+    function toggleMotivo() {
+        const val = document.getElementById('terminado').value;
+        document.getElementById('motDiv').style.display = (val === 'SI') ? 'none' : 'block';
+    }
+
+    async function toB64(file) {
+        return new Promise((res) => {
+            if (!file) return res("");
+            const r = new FileReader();
+            r.onload = () => res(r.result);
+            r.readAsDataURL(file);
+        });
+    }
+
+    document.getElementById('mainForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmit');
+        const ldr = document.getElementById('loader');
+        btn.disabled = true; ldr.style.display = 'block';
+
+        const payload = {
+            nombre: document.getElementById('nombre').value,
+            ot: document.getElementById('ot').value,
+            cargo: document.getElementById('cargo').value,
+            empresa: document.getElementById('empresa').value,
+            equipo: document.getElementById('equipo').value,
+            planificado: document.getElementById('planificado').value,
+            nPersonas: document.getElementById('nPersonas').value,
+            horas: document.getElementById('horas').value,
+            ocupoRepuestos: document.getElementById('ocupoRepuestos').value,
+            queRepuestos: document.getElementById('queRepuestos').value || "N/A",
+            terminado: document.getElementById('terminado').value,
+            motivoNoTerminado: document.getElementById('motivoNoTerminado').value || "Finalizado",
+            fotoHK: await toB64(document.getElementById('fHK').files[0]),
+            fotoAct: await toB64(document.getElementById('fAct').files[0]),
+            fotoART: await toB64(document.getElementById('fART').files[0]),
+            fotoIzaje: await toB64(document.getElementById('fIzaje').files[0])
+        };
+
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
+        .then(() => { alert("Reporte guardado con éxito!"); location.reload(); })
+        .catch(() => { alert("Error de conexión"); btn.disabled = false; ldr.style.display = 'none'; });
+    });
+</script>
+</body>
+</html>
