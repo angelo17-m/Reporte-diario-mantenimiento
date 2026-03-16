@@ -13,7 +13,7 @@
         label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; }
         input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 1rem; }
         .file-box { background: #f9f9f9; border: 1px dashed var(--blue); padding: 10px; border-radius: 5px; }
-        .btn { background: var(--blue); color: white; border: none; padding: 18px; width: 100%; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 30px; }
+        .btn { background: var(--blue); color: white; border: none; padding: 18px; width: 100%; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 30px; transition: 0.3s; }
         .btn:disabled { background: #ccc; }
         .loader { display: none; text-align: center; color: var(--copper); font-weight: bold; margin-top: 15px; }
     </style>
@@ -57,26 +57,17 @@
                 <option value="Harn5S/F900-5">Harn5S/F900-5</option>
             </optgroup>
             <optgroup label="F600 Serie A">
-                <option value="HarnF600 1A">HarnF600 1A</option>
-                <option value="HarnF600 2A">HarnF600 2A</option>
-                <option value="HarnF600 3A">HarnF600 3A</option>
-                <option value="HarnF600 4A">HarnF600 4A</option>
-                <option value="HarnF600 5A">HarnF600 5A</option>
-                <option value="HarnF600 6A">HarnF600 6A</option>
-                <option value="HarnF600 7A">HarnF600 7A</option>
-                <option value="HarnF600 8A">HarnF600 8A</option>
-                <option value="HarnF600 9A">HarnF600 9A</option>
-                <option value="HarnF600 10A">HarnF600 10A</option>
+                <option value="HarnF600 1A">HarnF600 1A</option><option value="HarnF600 2A">HarnF600 2A</option>
+                <option value="HarnF600 3A">HarnF600 3A</option><option value="HarnF600 4A">HarnF600 4A</option>
+                <option value="HarnF600 5A">HarnF600 5A</option><option value="HarnF600 6A">HarnF600 6A</option>
+                <option value="HarnF600 7A">HarnF600 7A</option><option value="HarnF600 8A">HarnF600 8A</option>
+                <option value="HarnF600 9A">HarnF600 9A</option><option value="HarnF600 10A">HarnF600 10A</option>
             </optgroup>
             <optgroup label="F600 Serie B">
-                <option value="HarnF600 3B">HarnF600 3B</option>
-                <option value="HarnF600 4B">HarnF600 4B</option>
-                <option value="HarnF600 5B">HarnF600 5B</option>
-                <option value="HarnF600 6B">HarnF600 6B</option>
-                <option value="HarnF600 7B">HarnF600 7B</option>
-                <option value="HarnF600 8B">HarnF600 8B</option>
-                <option value="HarnF600 9B">HarnF600 9B</option>
-                <option value="HarnF600 10B">HarnF600 10B</option>
+                <option value="HarnF600 3B">HarnF600 3B</option><option value="HarnF600 4B">HarnF600 4B</option>
+                <option value="HarnF600 5B">HarnF600 5B</option><option value="HarnF600 6B">HarnF600 6B</option>
+                <option value="HarnF600 7B">HarnF600 7B</option><option value="HarnF600 8B">HarnF600 8B</option>
+                <option value="HarnF600 9B">HarnF600 9B</option><option value="HarnF600 10B">HarnF600 10B</option>
             </optgroup>
             <optgroup label="Chancadores">
                 <option value="ChaS1">ChaS1</option><option value="ChaS2">ChaS2</option>
@@ -88,7 +79,7 @@
                 <option value="ChaT8">ChaT8</option><option value="ChaT9">ChaT9</option>
                 <option value="ChaT10">ChaT10</option>
             </optgroup>
-            <optgroup label="Nodos y Correas">
+            <optgroup label="Correas y Nodos">
                 <option value="NODO 1">NODO 1</option><option value="NODO 2">NODO 2</option><option value="NODO 3">NODO 3</option>
                 <option value="C/135A">C/135A</option><option value="C/1A">C/1A</option><option value="C/2A">C/2A</option>
                 <option value="C/11A">C/11A</option><option value="C/22A">C/22A</option><option value="C/140A">C/140A</option>
@@ -106,30 +97,23 @@
         </select>
 
         <div class="section-title">2. Detalles de Ejecución</div>
-        <label>Dotación (¿Con cuántas personas trabajó?)</label>
+        <label>¿Con cuántas personas trabajó?</label>
         <select id="nPersonas">
-            <option value="">Seleccione cantidad...</option>
-            <option value="1 persona">1 persona</option>
-            <option value="2 personas">2 personas</option>
-            <option value="3 personas">3 personas</option>
-            <option value="4 personas">4 personas</option>
-            <option value="5 personas">5 personas</option>
-            <option value="6 personas">6 personas</option>
-            <option value="7 personas">7 personas</option>
-            <option value="8 personas">8 personas</option>
-            <option value="9 personas">9 personas</option>
-            <option value="10 personas">10 personas</option>
+            <option value="">Seleccione...</option>
+            <option value="1 persona">1 persona</option><option value="2 personas">2 personas</option>
+            <option value="3 personas">3 personas</option><option value="4 personas">4 personas</option>
+            <option value="5 personas">5 personas</option><option value="6 personas">6 personas</option>
+            <option value="7 personas">7 personas</option><option value="8 personas">8 personas</option>
+            <option value="9 personas">9 personas</option><option value="10 personas">10 personas</option>
         </select>
 
         <label>¿Cuántas horas demoró?</label>
         <select id="horas">
-            <option value="">Seleccione horas...</option>
-            <option value="1 hr">1 hr</option><option value="2 hrs">2 hrs</option>
-            <option value="3 hrs">3 hrs</option><option value="4 hrs">4 hrs</option>
-            <option value="5 hrs">5 hrs</option><option value="6 hrs">6 hrs</option>
-            <option value="7 hrs">7 hrs</option><option value="8 hrs">8 hrs</option>
-            <option value="9 hrs">9 hrs</option><option value="10 hrs">10 hrs</option>
-            <option value="11 hrs">11 hrs</option><option value="12 hrs">12 hrs</option>
+            <option value="">Seleccione...</option>
+            <option value="1 hr">1 hr</option><option value="2 hrs">2 hrs</option><option value="3 hrs">3 hrs</option>
+            <option value="4 hrs">4 hrs</option><option value="5 hrs">5 hrs</option><option value="6 hrs">6 hrs</option>
+            <option value="7 hrs">7 hrs</option><option value="8 hrs">8 hrs</option><option value="9 hrs">9 hrs</option>
+            <option value="10 hrs">10 hrs</option><option value="11 hrs">11 hrs</option><option value="12 hrs">12 hrs</option>
         </select>
 
         <label>¿Terminaste el trabajo?</label>
@@ -148,13 +132,12 @@
         <input type="file" id="fotoART" accept="image/*" capture="environment" class="file-box">
 
         <button type="submit" id="btn" class="btn">ENVIAR REPORTE</button>
-        <div id="loading" class="loader">Sincronizando datos y fotos... No cierre la página.</div>
+        <div id="loading" class="loader">Sincronizando con Excel... Por favor espere.</div>
     </form>
 </div>
 
 <script>
-    // PEGA AQUÍ TU ÚLTIMA URL DE APPS SCRIPT
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2KNZ9MWt5Y4c12LDWQQEGsNDI6xpcISFu7RG8iC8yRQdLIhtejel20MXq_ArsjK329Q/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytCrqAbKK7_bsYy3wIMyYC8Wh-VAWJPcX_tX5HWZm7gzWUd9z0SeMNruCzgOON2P7E/exec";
 
     async function toB64(file) {
         return new Promise((res) => {
@@ -186,12 +169,16 @@
             fotoART: await toB64(document.getElementById('fotoART').files[0])
         };
 
-        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
+        fetch(SCRIPT_URL, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: JSON.stringify(payload) 
+        })
         .then(() => {
-            alert("¡Reporte enviado con éxito!");
+            alert("Reporte enviado con éxito.");
             location.reload();
         }).catch(() => {
-            alert("Error al enviar. Intente de nuevo.");
+            alert("Error al enviar.");
             btn.disabled = false;
             btn.innerText = "ENVIAR REPORTE";
             loader.style.display = 'none';
