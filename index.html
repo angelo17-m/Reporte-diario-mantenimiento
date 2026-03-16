@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reporte Técnico - Codelco</title>
+    <style>
+        :root {
+            --codelco-blue: #002855;
+            --codelco-copper: #E05206;
+            --gray-light: #f4f7f9;
+        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--gray-light); margin: 0; padding: 15px; color: #333; }
+        .header { background: var(--codelco-blue); color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0; margin-bottom: -10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .container { max-width: 550px; margin: 0 auto; background: white; padding: 25px; border-radius: 0 0 10px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 5px solid var(--codelco-copper); }
+        .section-title { color: var(--codelco-blue); border-bottom: 2px solid #eee; padding-bottom: 5px; margin-top: 25px; font-size: 0.95rem; text-transform: uppercase; font-weight: bold; }
+        label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 1rem; }
+        input:focus { border-color: var(--codelco-copper); outline: none; }
+        .photo-input { background: #fdfdfd; border: 1px dashed var(--codelco-blue); }
+        .btn-submit { background: var(--codelco-blue); color: white; border: none; padding: 16px; width: 100%; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 30px; transition: 0.3s; }
+        .btn-submit:hover { background: #004085; }
+        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
+        .loader { display: none; text-align: center; color: var(--codelco-copper); font
