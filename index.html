@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Diario - Chuquicamata</title>
+    <style>
+        :root { --copper: #E05206; --bg: #0b0b0b; --card: #1a1a1a; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; padding: 10px; margin: 0; }
+        .container { max-width: 500px; margin: 10px auto; background: var(--card); border-radius: 12px; border-top: 5px solid var(--copper); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .form-content { padding: 20px; }
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        label { display: block; margin: 15px 0 5px; font-weight: bold; color: #ccc; font-size: 0.9rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #333; border-radius: 8px; background: #252525; color: white; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 10px; margin-top: 25px; }
+        .btn { flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-next { background: var(--copper); color: white; }
+        .btn-prev { background: #444; color: white; }
+        .btn-submit { background: #28a745; color: white; width: 100%; margin-top: 20px; }
+        .loader { display: none; text-align: center; color: var(--copper); font-weight: bold; margin-top: 15px; }
+        option { background: #1a1a1a; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-content">
+        <h2 style="text-align:center; color:var(--copper); text-transform:uppercase;">Reporte Diario</h2>
+        <form id="mainForm">
+            <div class="step active" id="s1">
+                <label>Nombre *</label>
+                <input type="text" id="nombre" required placeholder="Nombre y Apellido">
+                <label>N° OT</label>
+                <input type="text" id="ot" placeholder="Número de OT">
+                <label>Cargo oficial</label>
+                <input type="text" id="cargo" placeholder="Tu cargo">
+                <div class="btn-group"><button type="button" class="btn btn-next" onclick="move(2)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s2">
+                <label>¿De qué empresa eres?</label>
+                <select id="empresa">
+                    <option value="Codelco">Codelco</option>
+                    <option value="Metso">Metso</option>
+                    <option value="Nexxo">Nexxo</option>
+                    <option value="SKF">SKF</option>
+                    <option value="Schwager">Schwager</option>
+                    <option value="Cimap">Cimap</option>
+                </select>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(1)">Atrás</button><button type="button" class="btn btn-next" onclick="move(3)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s3">
+                <label>¿En qué equipo trabajaste?</label>
+                <select id="equipo">
+                    <option value="Harn15/F900-1">Harn15/F900-1</option><option value="Harn25/F900-1">Harn25/F900-1</option>
+                    <option value="F900-3">F900-3</option><option value="F900-3A">F900-3A</option>
+                    <option value="Harn45/F900-4">Harn45/F900-4</option><option value="Harn5S/F900-5">Harn5S/F900-5</option>
+                    <option value="HarnF600 1A">HarnF600 1A</option><option value="HarnF600 2A">HarnF600 2A</option>
+                    <option value="HarnF600 3A">HarnF600 3A</option><option value="HarnF600 4A">HarnF600 4A</option>
+                    <option value="HarnF600 5A">HarnF600 5A</option><option value="HarnF600 6A">HarnF600 6A</option>
+                    <option value="HarnF600 7A">HarnF600 7A</option><option value="HarnF600 8A">HarnF600 8A</option>
+                    <option value="HarnF600 9A">HarnF600 9A</option><option value="HarnF600 10A">HarnF600 10A</option>
+                    <option value="HarnF600 3B">HarnF600 3B</option><option value="HarnF600 4B">HarnF600 4B</option>
+                    <option value="HarnF600 5B">HarnF600 5B</option><option value="HarnF600 6B">HarnF600 6B</option>
+                    <option value="HarnF600 7B">HarnF600 7B</option><option value="HarnF600 8B">HarnF600 8B</option>
+                    <option value="HarnF600 9B">HarnF600 9B</option><option value="HarnF600 10B">HarnF600 10B</option>
+                    <option value="ChaS1">ChaS1</option><option value="ChaS2">ChaS2</option><option value="ChaS3">ChaS3</option>
+                    <option value="ChaS4">ChaS4</option><option value="ChaS5">ChaS5</option>
+                    <option value="ChaT1">ChaT1</option><option value="ChaT2">ChaT2</option><option value="ChaT3">ChaT3</option>
+                    <option value="ChaT4">ChaT4</option><option value="ChaT5">ChaT5</option><option value="ChaT6">ChaT6</option>
+                    <option value="ChaT7">ChaT7</option><option value="ChaT8">ChaT8</option><option value="ChaT9">ChaT9</option>
+                    <option value="ChaT10">ChaT10</option><option value="NODO 1">NODO 1</option><option value="NODO 2">NODO 2</option>
+                    <option value="NODO 3">NODO 3</option><option value="C/135A">C/135A</option><option value="C/1A">C/1A</option>
+                    <option value="C/2A">C/2A</option><option value="C/11A">C/11A</option><option value="C/22A">C/22A</option>
+                    <option value="C/140A">C/140A</option><option value="C/141A">C/141A</option><option value="C/140">C/140</option>
+                    <option value="C/141">C/141</option><option value="C/142">C/142</option><option value="C/136A">C/136A</option>
+                    <option value="C/136B">C/136B</option><option value="C/136C">C/136C</option><option value="C/144">C/144</option>
+                    <option value="C/137A">C/137A</option><option value="C/137">C/137</option><option value="C/135B">C/135B</option>
+                    <option value="C/135C">C/135C</option><option value="C/135D">C/135D</option><option value="C/136">C/136</option>
+                    <option value="C/138">C/138</option><option value="C/139">C/139</option><option value="C/143">C/143</option>
+                    <option value="C/135E">C/135E</option><option value="C/134A">C/134A</option><option value="C/134B">C/134B</option>
+                    <option value="C/134C">C/134C</option><option value="C/134D">C/134D</option><option value="C/134E">C/134E</option>
+                    <option value="Carro norte (CT137)">Carro norte (CT137)</option>
+                    <option value="Carro sur (CT137 A)">Carro sur (CT137 A)</option>
+                    <option value="Fabricación/Reparación estructuras">Fabricación/Reparación estructuras</option>
+                    <option value="Housekeeping">Housekeeping</option>
+                </select>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(2)">Atrás</button><button type="button" class="btn btn-next" onclick="move(4)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s4">
+                <label>Registro fotográfico Housekeeping</label>
+                <input type="file" id="fHK" accept="image/*" capture="environment">
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(3)">Atrás</button><button type="button" class="btn btn-next" onclick="move(5)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s5">
+                <label>¿Ocupó repuestos? *</label>
+                <select id="ocupoRepuestos" onchange="toggleRepuestos()">
+                    <option value="NO">NO</option><option value="SI">SI</option>
+                </select>
+                <div id="repDiv" style="display:none; margin-top:10px;">
+                    <label>¿Qué repuestos ocupó?</label>
+                    <textarea id="queRepuestos" placeholder="Escriba los repuestos utilizados..."></textarea>
+                </div>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(4)">Atrás</button><button type="button" class="btn btn-next" onclick="move(6)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s6">
+                <label>¿Con cuántas personas se hizo el trabajo?</label>
+                <input type="number" id="nPersonas" min="1" value="1">
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(5)">Atrás</button><button type="button" class="btn btn-next" onclick="move(7)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s7">
+                <label>¿Cuántas horas demoró?</label>
+                <input type="text" id="horas" placeholder="Ej: 2hrs">
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(6)">Atrás</button><button type="button" class="btn btn-next" onclick="move(8)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s8">
+                <label>¿Trabajo planificado?</label>
+                <select id="planificado"><option value="SI">SI</option><option value="NO">NO</option></select>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(7)">Atrás</button><button type="button" class="btn btn-next" onclick="move(9)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s9">
+                <label>¿Terminaste el trabajo completamente? *</label>
+                <select id="terminado" onchange="toggleMotivo()">
+                    <option value="SI">SI</option><option value="NO">NO</option><option value="EN CURSO">EN CURSO</option>
+                </select>
+                <div id="motDiv" style="display:none; margin-top:10px;">
+                    <label>Motivo de no término</label>
+                    <textarea id="motivoNoTerminado" placeholder="Explique la razón..."></textarea>
+                </div>
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(8)">Atrás</button><button type="button" class="btn btn-next" onclick="move(10)">Siguiente</button></div>
+            </div>
+
+            <div class="step" id="s10">
+                <label>Foto Actividad Realizada</label>
+                <input type="file" id="fAct" accept="image/*" capture="environment">
+                
+                <label>Foto ART</label>
+                <input type="file" id="fART" accept="image/*" capture="environment">
+
+                <label>Foto Plan de Izaje (Si aplica)</label>
+                <input type="file" id="fIzaje" accept="image/*">
+
+                <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(9)">Atrás</button></div>
+                <button type="submit" id="btnSubmit" class="btn btn-submit">ENVIAR REPORTE</button>
+                <div id="loader" class="loader">Comprimiendo fotos y enviando a la nube...</div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // TU URL DE GOOGLE APPS SCRIPT
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWlDa7jNC_DSKbP_cdQz-FF4YSX8SCuv5bnIly2VP15SbKFEfT2OgTxrb_s0SNkufZ/exec";
+
+    function move(n) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('s' + n).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function toggleRepuestos() {
+        const val = document.getElementById('ocupoRepuestos').value;
+        document.getElementById('repDiv').style.display = (val === 'SI') ? 'block' : 'none';
+    }
+
+    function toggleMotivo() {
+        const val = document.getElementById('terminado').value;
+        document.getElementById('motDiv').style.display = (val === 'SI') ? 'none' : 'block';
+    }
+
+    // Compresor de imágenes para no saturar Google Sheets
+    async function processImage(file) {
+        return new Promise((resolve) => {
+            if (!file) return resolve("");
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 400; 
+                    const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleSize;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.6));
+                };
+            };
+        });
+    }
+
+    document.getElementById('mainForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmit');
+        const ldr = document.getElementById('loader');
+        
+        btn.disabled = true; 
+        ldr.style.display = 'block';
+
+        const payload = {
+            nombre: document.getElementById('nombre').value,
+            ot: document.getElementById('ot').value,
+            cargo: document.getElementById('cargo').value,
+            empresa: document.getElementById('empresa').value,
+            equipo: document.getElementById('equipo').value,
+            planificado: document.getElementById('planificado').value,
+            nPersonas: document.getElementById('nPersonas').value,
+            horas: document.getElementById('horas').value,
+            ocupoRepuestos: document.getElementById('ocupoRepuestos').value,
+            queRepuestos: document.getElementById('queRepuestos').value || "N/A",
+            terminado: document.getElementById('terminado').value,
+            motivoNoTerminado: document.getElementById('motivoNoTerminado').value || "Finalizado",
+            fotoHK: await processImage(document.getElementById('fHK').files[0]),
+            fotoAct: await processImage(document.getElementById('fAct').files[0]),
+            fotoART: await processImage(document.getElementById('fART').files[0]),
+            fotoIzaje: await processImage(document.getElementById('fIzaje').files[0])
+        };
+
+        try {
+            // Enviamos como texto plano para evitar bloqueos de CORS en Google Apps Script
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', 
+                cache: 'no-cache',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            alert("✅ Reporte enviado con éxito. Ya puedes cerrar esta pestaña.");
+            location.reload();
+
+        } catch (error) {
+            alert("❌ Error de conexión con la nube de Google.");
+            btn.disabled = false; ldr.style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>
