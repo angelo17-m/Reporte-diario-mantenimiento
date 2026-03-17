@@ -40,7 +40,7 @@
             </div>
 
             <div class="step" id="s2">
-                <label>¿De que empresa eres?</label>
+                <label>¿De qué empresa eres?</label>
                 <select id="empresa">
                     <option value="Codelco">Codelco</option>
                     <option value="Metso">Metso</option>
@@ -53,7 +53,7 @@
             </div>
 
             <div class="step" id="s3">
-                <label>¿En que equipo trabajaste?</label>
+                <label>¿En qué equipo trabajaste?</label>
                 <select id="equipo">
                     <option value="Harn15/F900-1">Harn15/F900-1</option><option value="Harn25/F900-1">Harn25/F900-1</option>
                     <option value="F900-3">F900-3</option><option value="F900-3A">F900-3A</option>
@@ -92,8 +92,8 @@
             </div>
 
             <div class="step" id="s4">
-                <label>Deje aqui registro fotografico del housekeeping</label>
-                <input type="file" id="fHK" accept="image/*">
+                <label>Registro fotográfico Housekeeping</label>
+                <input type="file" id="fHK" accept="image/*" capture="environment">
                 <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(3)">Atrás</button><button type="button" class="btn btn-next" onclick="move(5)">Siguiente</button></div>
             </div>
 
@@ -103,33 +103,26 @@
                     <option value="NO">NO</option><option value="SI">SI</option>
                 </select>
                 <div id="repDiv" style="display:none; margin-top:10px;">
-                    <label>¿Que repuestos ocupo?</label>
+                    <label>¿Qué repuestos ocupó?</label>
                     <textarea id="queRepuestos" placeholder="Escriba los repuestos utilizados..."></textarea>
                 </div>
                 <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(4)">Atrás</button><button type="button" class="btn btn-next" onclick="move(6)">Siguiente</button></div>
             </div>
 
             <div class="step" id="s6">
-                <label>¿Con cuantas personas se hizo el trabajo?</label>
-                <select id="nPersonas">
-                    <option value="1">1</option><option value="2">2</option><option value="3">3</option>
-                    <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-                    <option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
-                </select>
+                <label>¿Con cuántas personas se hizo el trabajo?</label>
+                <input type="number" id="nPersonas" min="1" value="1">
                 <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(5)">Atrás</button><button type="button" class="btn btn-next" onclick="move(7)">Siguiente</button></div>
             </div>
 
             <div class="step" id="s7">
-                <label>¿Cuantas horas demoro?</label>
-                <select id="horas">
-                    <option value="1hrs">1hrs</option><option value="2hrs">2hrs</option>
-                    <option value="4hrs">4hrs</option><option value="8hrs">8hrs</option><option value="12hrs">12hrs</option>
-                </select>
+                <label>¿Cuántas horas demoró?</label>
+                <input type="text" id="horas" placeholder="Ej: 2hrs">
                 <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(6)">Atrás</button><button type="button" class="btn btn-next" onclick="move(8)">Siguiente</button></div>
             </div>
 
             <div class="step" id="s8">
-                <label>¿trabajo planificado?</label>
+                <label>¿Trabajo planificado?</label>
                 <select id="planificado"><option value="SI">SI</option><option value="NO">NO</option></select>
                 <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(7)">Atrás</button><button type="button" class="btn btn-next" onclick="move(9)">Siguiente</button></div>
             </div>
@@ -140,32 +133,33 @@
                     <option value="SI">SI</option><option value="NO">NO</option><option value="EN CURSO">EN CURSO</option>
                 </select>
                 <div id="motDiv" style="display:none; margin-top:10px;">
-                    <label>Si no terminaste el trabajo , ¿Porque motivo?</label>
+                    <label>Motivo de no término</label>
                     <textarea id="motivoNoTerminado" placeholder="Explique la razón..."></textarea>
                 </div>
                 <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(8)">Atrás</button><button type="button" class="btn btn-next" onclick="move(10)">Siguiente</button></div>
             </div>
 
             <div class="step" id="s10">
-                <label>Registro fotografico actividad</label>
-                <input type="file" id="fAct" accept="image/*">
+                <label>Foto Actividad Realizada</label>
+                <input type="file" id="fAct" accept="image/*" capture="environment">
                 
-                <label>Registro fotográfico ART</label>
-                <input type="file" id="fART" accept="image/*">
+                <label>Foto ART</label>
+                <input type="file" id="fART" accept="image/*" capture="environment">
 
-                <label>Registro fotográfico Plan de Izaje</label>
+                <label>Foto Plan de Izaje (Si aplica)</label>
                 <input type="file" id="fIzaje" accept="image/*">
 
                 <div class="btn-group"><button type="button" class="btn btn-prev" onclick="move(9)">Atrás</button></div>
                 <button type="submit" id="btnSubmit" class="btn btn-submit">ENVIAR REPORTE</button>
-                <div id="loader" class="loader">Comprimiendo fotos y enviando...</div>
+                <div id="loader" class="loader">Comprimiendo fotos y enviando a la nube...</div>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/TU_ID_DE_GOOGLE/exec";
+    // TU URL DE GOOGLE APPS SCRIPT
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWlDa7jNC_DSKbP_cdQz-FF4YSX8SCuv5bnIly2VP15SbKFEfT2OgTxrb_s0SNkufZ/exec";
 
     function move(n) {
         document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
@@ -183,7 +177,7 @@
         document.getElementById('motDiv').style.display = (val === 'SI') ? 'none' : 'block';
     }
 
-    // FUNCIÓN CLAVE: Comprime la imagen para que pese poco
+    // Compresor de imágenes para no saturar Google Sheets
     async function processImage(file) {
         return new Promise((resolve) => {
             if (!file) return resolve("");
@@ -194,13 +188,12 @@
                 img.src = event.target.result;
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 400; // Reducimos el ancho para que quepa en la celda
+                    const MAX_WIDTH = 400; 
                     const scaleSize = MAX_WIDTH / img.width;
                     canvas.width = MAX_WIDTH;
                     canvas.height = img.height * scaleSize;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    // Comprimimos al 60% de calidad
                     resolve(canvas.toDataURL('image/jpeg', 0.6));
                 };
             };
@@ -228,7 +221,6 @@
             queRepuestos: document.getElementById('queRepuestos').value || "N/A",
             terminado: document.getElementById('terminado').value,
             motivoNoTerminado: document.getElementById('motivoNoTerminado').value || "Finalizado",
-            // Procesamos las fotos aquí
             fotoHK: await processImage(document.getElementById('fHK').files[0]),
             fotoAct: await processImage(document.getElementById('fAct').files[0]),
             fotoART: await processImage(document.getElementById('fART').files[0]),
@@ -236,21 +228,20 @@
         };
 
         try {
+            // Enviamos como texto plano para evitar bloqueos de CORS en Google Apps Script
             const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
+                mode: 'no-cors', 
+                cache: 'no-cache',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
-            if (response.ok) {
-                alert("✅ ¡Reporte guardado con éxito!");
-                location.reload();
-            } else {
-                alert("❌ Error en el servidor. Revisa la terminal.");
-                btn.disabled = false; ldr.style.display = 'none';
-            }
+            alert("✅ Reporte enviado con éxito. Ya puedes cerrar esta pestaña.");
+            location.reload();
+
         } catch (error) {
-            alert("❌ Error de conexión. ¿Está corriendo 'node server.js'?");
+            alert("❌ Error de conexión con la nube de Google.");
             btn.disabled = false; ldr.style.display = 'none';
         }
     });
